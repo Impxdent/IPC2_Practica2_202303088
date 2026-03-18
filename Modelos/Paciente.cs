@@ -22,7 +22,7 @@ namespace IPC2_Practica2_202303088.Modelos
         {
             this.nombre=nombre;
         }
-        public string GetEdad()
+        public int GetEdad()
         {
             return edad;
         }
@@ -38,7 +38,7 @@ namespace IPC2_Practica2_202303088.Modelos
         {
             this.especialidad=especialidad;
         }
-        public string GetTiempoAtencion()
+        public int GetTiempoAtencion()
         {
             return tiempoAtencion;
         }

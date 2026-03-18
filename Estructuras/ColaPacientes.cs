@@ -1,3 +1,5 @@
+using IPC2_Practica2_202303088.Modelos;
+
 namespace IPC2_Practica2_202303088.Estructuras
 {
     public class ColaPacientes
