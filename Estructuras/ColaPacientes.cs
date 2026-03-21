@@ -96,5 +96,16 @@ namespace IPC2_Practica2_202303088.Estructuras
 
             return resultado + "null";
         }
+        public int CalcularTiempoEspera()
+        {
+            int total=0;
+            Nodo actual=frente;
+            while(actual != null)
+            {
+                total +=actual.GetDato().GetTiempoAtencion();
+                actual=actual.GetSiguiente();
+            }
+            return total;
+        }
     }
 }

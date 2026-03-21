@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using IPC2_Practica2_202303088.Estructuras;
 using IPC2_Practica2_202303088.Modelos;
+using IPC2_Practica2_202303088.Graphviz;
 
 namespace IPC2_Practica2_202303088
 {
@@ -52,19 +53,53 @@ namespace IPC2_Practica2_202303088
             LimpiarCampos();
             MostrarCola();
         }
+        private void btnAtender_Click(object sender, EventArgs e)
+        {
+            if (cola.EstaVacia())
+            {
+                MessageBox.Show("No hay pacientes en espera");
+                return;
+            }
+
+            int tiempoEspera = cola.CalcularTiempoEspera() - cola.VerPrimero().GetTiempoAtencion();
+            Paciente atendido = cola.Desencolar();
+            MessageBox.Show(
+                "Paciente atendido:\n" +
+                "Nombre: " + atendido.GetNombre() + "\n" +
+                "Especialidad: " + atendido.GetEspecialidad() + "\n" +
+                "Tiempo de atención: " + atendido.GetTiempoAtencion() + " min\n" +
+                "Tiempo de espera acumulado: " + tiempoEspera + " min"
+            );
+
+            MostrarCola();
+        }
+        private void btnGraficar_Click(object sender, EventArgs e)
+        {
+            Graficador.GraficarCola(cola);
+            FormGrafica ventana = new FormGrafica();
+            ventana.CargarImagen("cola.png");
+            ventana.ShowDialog();
+        }
         private void MostrarCola()
         {
             listCola.Items.Clear();
+
             Nodo actual = cola.GetFrente();
+            int tiempoAcumulado = 0;
 
             while (actual != null)
             {
                 Paciente p = actual.GetDato();
+
                 listCola.Items.Add(
-                    p.GetNombre() + " | Edad: " + p.GetEdad() +
-                    " | " + p.GetEspecialidad() +
-                    " | " + p.GetTiempoAtencion() + " min"
+                    p.GetNombre() + " | " +
+                    p.GetEspecialidad() +
+                    " | Espera: " + tiempoAcumulado + " min" +
+                    " | Atención: " + p.GetTiempoAtencion() + " min"
                 );
+
+                tiempoAcumulado += p.GetTiempoAtencion();
+
                 actual = actual.GetSiguiente();
             }
         }
@@ -74,9 +109,10 @@ namespace IPC2_Practica2_202303088
             txtEdad.Text = "";
             cmbEspecialidad.SelectedIndex = -1;
         }
-        private void btnMostrar_Click(object sender, EventArgs e)
+
+        private void btnSalir_Click(object sender, EventArgs e)
         {
-            MostrarCola();
+            Application.Exit();
         }
     }
 }
